@@ -306,12 +306,6 @@ impl EventHandler for Handler {
                     timestamp: Utc::now(),
                 };
 
-                // Use new_current_bug.timestamp in the embed footer
-                let formatted_timestamp = new_current_bug
-                    .timestamp
-                    .format("%B %d, %Y at %I:%M %p")
-                    .to_string();
-
                 let mut embed = serenity::builder::CreateEmbed::default()
                     .title(format!("Fortnightly Bug: *{}*", bug_name.as_str()))
                     .url(wiki_url.as_str())
@@ -319,7 +313,7 @@ impl EventHandler for Handler {
                     .color(0x1D82B6)
                     .footer(serenity::builder::CreateEmbedFooter::new(format!(
                         "Selected on {}",
-                        formatted_timestamp
+                        new_current_bug.timestamp.format("%B %d, %Y at %I:%M %p")
                     )));
 
                 if let Some(image) = image_url {
@@ -428,7 +422,11 @@ impl EventHandler for Handler {
                     .title(current_bug.bug_name.as_str())
                     .url(current_bug.wiki_url.as_str())
                     .description(summary)
-                    .color(0x1D82B6);
+                    .color(0x1D82B6)
+                    .footer(serenity::builder::CreateEmbedFooter::new(format!(
+                        "Selected on {}",
+                        current_bug.timestamp.format("%B %d, %Y at %I:%M %p")
+                    )));
 
                 if let Some(image) = image_url {
                     embed = embed.image(image);
