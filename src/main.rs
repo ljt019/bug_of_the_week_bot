@@ -514,11 +514,8 @@ impl EventHandler for Handler {
                 );
 
                 let embed = serenity::builder::CreateEmbed::default()
-                    .title("Next Bug Selection")
-                    .description(format!(
-                        "Time remaining until the next bug is selected: **{}**",
-                        time_left
-                    ))
+                    .title("Next Bug Day")
+                    .description(format!("**{}**", time_left))
                     .color(0xFFD700);
 
                 let message = CreateMessage::default().embed(embed);
@@ -534,7 +531,7 @@ impl EventHandler for Handler {
                         "Here are the available commands:\n\n\
                         **`*bug`** - Displays the current bug of the fortnight.\n\
                         **`*buglog`** - Shows the history of previously selected bugs.\n\
-                        **`*whenbug`** - Shows the time remaining until the next bug selection.\n\
+                        **`*whenbug`** - Shows the time remaining until the next bug day.\n\
                         **`*help`** - Displays this help message.",
                     )
                     .color(0x00FF00);
