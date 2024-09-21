@@ -309,7 +309,7 @@ impl EventHandler for Handler {
                 // Use new_current_bug.timestamp in the embed footer
                 let formatted_timestamp = new_current_bug
                     .timestamp
-                    .format("%Y-%m-%d %H:%M:%S")
+                    .format("%B %d, %Y at %I:%M %p")
                     .to_string();
 
                 let mut embed = serenity::builder::CreateEmbed::default()
