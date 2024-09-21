@@ -299,6 +299,16 @@ impl EventHandler for Handler {
                         }
                     };
 
+                // Create the CurrentBug instance before constructing the embed
+                let new_current_bug = CurrentBug {
+                    bug_name: bug_name.to_string(),
+                    wiki_url: wiki_url.to_string(),
+                    timestamp: Utc::now(),
+                };
+
+                // Use new_current_bug.timestamp in the embed footer
+                let formatted_timestamp = new_current_bug.timestamp.format("%Y-%m-%d").to_string();
+
                 let mut embed = serenity::builder::CreateEmbed::default()
                     .title(format!("Fortnightly Bug: *{}*", bug_name.as_str()))
                     .url(wiki_url.as_str())
@@ -306,7 +316,7 @@ impl EventHandler for Handler {
                     .color(0x1D82B6)
                     .footer(serenity::builder::CreateEmbedFooter::new(format!(
                         "Selected on {}",
-                        Utc::now().format("%Y-%m-%d")
+                        formatted_timestamp
                     )));
 
                 if let Some(image) = image_url {
@@ -320,12 +330,7 @@ impl EventHandler for Handler {
                 } else {
                     info!("Fortnightly bug sent: {}", bug_name);
 
-                    let new_current_bug = CurrentBug {
-                        bug_name: bug_name.to_string(),
-                        wiki_url: wiki_url.to_string(),
-                        timestamp: Utc::now(),
-                    };
-
+                    // Write the new_current_bug to current_bug.json
                     if let Err(e) = write_current_bug("current_bug.json", &new_current_bug).await {
                         error!("Error writing current_bug.json: {}", e);
                     }
@@ -334,7 +339,7 @@ impl EventHandler for Handler {
                     updated_log.push(BugLogEntry {
                         bug_name: bug_name.to_string(),
                         wiki_url: wiki_url.to_string(),
-                        timestamp: Utc::now(),
+                        timestamp: new_current_bug.timestamp, // Use the same timestamp
                     });
 
                     if updated_log.len() >= 26 {
