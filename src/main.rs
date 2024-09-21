@@ -357,7 +357,7 @@ impl EventHandler for Handler {
         let content = msg.content.trim();
 
         match content.to_lowercase().as_str() {
-            "!bug" => {
+            "*bug" => {
                 let current_bug = match read_current_bug(&self.current_bug_path).await {
                     Ok(bug) => bug,
                     Err(_) => {
@@ -428,7 +428,7 @@ impl EventHandler for Handler {
                     error!("Error sending embed: {:?}", why);
                 }
             }
-            "!buglog" => {
+            "*buglog" => {
                 let bug_log = match read_bug_log(&self.log_path).await {
                     Ok(log) => log,
                     Err(e) => {
@@ -470,7 +470,7 @@ impl EventHandler for Handler {
                     error!("Error sending bug log: {:?}", why);
                 }
             }
-            "!whenbug" => {
+            "*whenbug" => {
                 let current_bug = match read_current_bug(&self.current_bug_path).await {
                     Ok(bug) => bug,
                     Err(_) => {
@@ -525,6 +525,24 @@ impl EventHandler for Handler {
 
                 if let Err(why) = msg.channel_id.send_message(&ctx.http, message).await {
                     error!("Error sending !whenBug embed: {:?}", why);
+                }
+            }
+            "*help" => {
+                let embed = serenity::builder::CreateEmbed::default()
+                    .title("Bug Bot Help")
+                    .description(
+                        "Here are the available commands:\n\n\
+                        **`*bug`** - Displays the current bug of the fortnight.\n\
+                        **`*buglog`** - Shows the history of previously selected bugs.\n\
+                        **`*whenbug`** - Shows the time remaining until the next bug selection.\n\
+                        **`*help`** - Displays this help message.",
+                    )
+                    .color(0x00FF00);
+
+                let message = CreateMessage::default().embed(embed);
+
+                if let Err(why) = msg.channel_id.send_message(&ctx.http, message).await {
+                    error!("Error sending help embed: {:?}", why);
                 }
             }
             _ => {}
