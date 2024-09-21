@@ -313,7 +313,7 @@ impl EventHandler for Handler {
                     .color(0x1D82B6)
                     .footer(serenity::builder::CreateEmbedFooter::new(format!(
                         "Selected on {}",
-                        new_current_bug.timestamp.format("%B %d, %Y at %I:%M %p")
+                        new_current_bug.timestamp.format("%B %d, %Y at %I:%M %p %Z")
                     )));
 
                 if let Some(image) = image_url {
@@ -425,7 +425,7 @@ impl EventHandler for Handler {
                     .color(0x1D82B6)
                     .footer(serenity::builder::CreateEmbedFooter::new(format!(
                         "Selected on {}",
-                        current_bug.timestamp.format("%B %d, %Y at %I:%M %p")
+                        current_bug.timestamp.format("%B %d, %Y at %I:%M %p %Z")
                     )));
 
                 if let Some(image) = image_url {
