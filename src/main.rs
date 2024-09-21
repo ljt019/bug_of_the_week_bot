@@ -300,7 +300,7 @@ impl EventHandler for Handler {
                     };
 
                 let mut embed = serenity::builder::CreateEmbed::default()
-                    .title(bug_name.as_str())
+                    .title(format!("Fortnightly Bug: *{}*", bug_name.as_str()))
                     .url(wiki_url.as_str())
                     .description(summary)
                     .color(0x1D82B6);
