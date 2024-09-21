@@ -303,7 +303,11 @@ impl EventHandler for Handler {
                     .title(format!("Fortnightly Bug: *{}*", bug_name.as_str()))
                     .url(wiki_url.as_str())
                     .description(summary)
-                    .color(0x1D82B6);
+                    .color(0x1D82B6)
+                    .footer(serenity::builder::CreateEmbedFooter::new(format!(
+                        "Selected on {}",
+                        Utc::now().format("%Y-%m-%d")
+                    )));
 
                 if let Some(image) = image_url {
                     embed = embed.image(image);
